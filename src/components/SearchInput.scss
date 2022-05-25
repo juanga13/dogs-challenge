@@ -1,0 +1,60 @@
+.search-input {
+    // height: 36px;
+    position: relative;
+    > .options-container {
+        position: absolute;
+        margin-top: 10px;
+        max-height: 200px;
+        width: 300px;
+        background-color: white;
+        box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.15);
+        overflow-x: hidden;
+        overflow-y: scroll;
+        padding: 5px;
+        border-radius: 4px;
+
+        // only breed
+        > .option, > .option-container > .option {
+            padding: 5px 10px;
+            border-radius: 4px;
+
+            &:hover {
+                background-color: #fafafa;
+                outline: 1px solid #c3c3c3;
+                cursor: pointer;
+            }
+        }
+        > .option {
+            margin-bottom: 5px;
+        }
+
+        // breed with subbreeds
+        > .option-container {
+            margin-bottom: 5px;
+            border-radius: 4px;
+            
+            > .sub-option {
+                padding: 5px 10px;
+                padding-left: 30px;
+                border-radius: 4px;
+                font-weight: 300;
+
+                &:hover {
+                    background-color: #f0f0f0;
+                    outline: 1px solid #c3c3c3;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    // to listen when clicking outside options-container
+    > .options-container-mask {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100vw;
+        // background-color: rgba(0, 0, 0, 0.2);
+    }
+}

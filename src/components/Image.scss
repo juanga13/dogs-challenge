@@ -1,0 +1,17 @@
+.image {
+    margin-top: 2px;
+    margin-bottom: 0px;
+    width: 160px;
+    height: 160px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    border-radius: 4px;
+    transition: margin ease 100ms;
+
+    &:hover {
+        margin-top: 0px;
+        margin-bottom: 2px;
+        box-shadow: 0 0 5px 3px rgba($color: #000000, $alpha: 0.2);
+    }
+}

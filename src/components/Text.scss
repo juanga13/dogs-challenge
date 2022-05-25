@@ -1,0 +1,9 @@
+.text {
+    margin: 0;
+    
+    &.title {
+        font-weight: 700;
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+}
