@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import './Image.scss';
 
 interface ImageProps {
@@ -5,12 +6,15 @@ interface ImageProps {
 }
 
 export const Image = (props: ImageProps) => {
+    const [loading, setLoading] = useState(true);
+    
     return (
-        <div
-            className='image'
-            style={{
-                backgroundImage: `url("${props.src}")`,
-            }}
-        />
-    )
+        <div className={loading ? 'image-loading' : 'image'}>
+            <img
+                alt=''
+                src={props.src} 
+                onLoad={() => setLoading(false)}
+            />
+        </div>
+    );
 };

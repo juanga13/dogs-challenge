@@ -1,9 +1,60 @@
 .search-input {
-    // height: 36px;
+    display: flex;
+    flex-flow: row nowrap;
     position: relative;
+    height: 36px;
+    width: 100%;
+    max-width: 560px;
+
+    > input {
+        height: 36px;
+        background-color: rgba(247, 247, 247, 1);
+        border: none;
+        outline: none;
+        width: 100%;
+        transition: box-shadow ease 100ms;
+        font-size: 16px;
+        padding: 0 17px;
+        border-radius: 4px;
+
+        &:hover {
+            box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.15);
+        }
+        &.focused {
+            box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.1);
+        }
+    }
+
+    > button {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        right: 0;
+        height: 36px;
+        width: 105px;
+        border-radius: 4px;
+        background-color: rgba(7, 148, 227, 1);
+        border: none;
+        color: white;
+        font-size: 14px;
+        font-weight: 700;
+        transition: box-shadow ease 100ms;
+
+        > svg {
+            margin-right: 8px;
+        }
+
+        &:hover {
+            cursor: pointer;
+            box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.15);
+        }
+    }
+
     > .options-container {
         position: absolute;
-        margin-top: 10px;
+        margin-top: calc(36px + 10px);
         max-height: 200px;
         width: 300px;
         background-color: white;
@@ -55,6 +106,9 @@
         left: 0;
         height: 100vh;
         width: 100vw;
-        // background-color: rgba(0, 0, 0, 0.2);
     }
+}
+
+@media only screen and (max-width: 560px)  {
+
 }

@@ -31,7 +31,6 @@ const App = () => {
         if (!breedSearchParam.breed) return;
         if (!breedSearchParam.subBreed) breedString = breedSearchParam.breed;
         else breedString = breedSearchParam.breed + '/' + breedSearchParam.subBreed
-        console.log('handleSearchClick', breedString);
         request<{message: {[key: string]: string[]}, status: boolean}>(
             API_URLS.IMAGE_FROM_BREED(breedString)
         )

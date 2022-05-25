@@ -3,6 +3,7 @@ import { MouseEvent, useState } from "react";
 import { Text } from "./Text";
 import { toFirstUpperCase } from "../utils";
 import { BreedSearchParam } from '../types';
+import { ReactComponent as ZoomIcon } from '../assets/zoom.svg';
 
 interface SearchInputProps {
     onChange: (data: BreedSearchParam) => void
@@ -25,7 +26,6 @@ export const SearchInput = (props: SearchInputProps) => {
     const [openAutocomplete, setOpenAutocomplete] = useState(false);
 
     const handleSelect = (e: MouseEvent, breed: string, subBreed: string | null) => {
-        console.log(breed, subBreed)
         if (subBreed) setSearchText(toFirstUpperCase(subBreed))
         else setSearchText(toFirstUpperCase(breed))
         props.onChange({breed, subBreed});
@@ -61,9 +61,11 @@ export const SearchInput = (props: SearchInputProps) => {
                 onChange={(e) => handleChange(e.target.value)}
                 placeholder={props.placeholder}
                 autoFocus
+                className={openAutocomplete ? 'focused' : ''}
             />
             {props.buttonProps && (
                 <button onClick={() => props.buttonProps?.onClick()}>
+                    <ZoomIcon/>
                     {props.buttonProps.text}
                 </button>
             )}
