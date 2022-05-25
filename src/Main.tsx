@@ -1,16 +1,44 @@
 import { useEffect, useState } from "react";
-import { Image } from "./components/Image";
+import { DogImage } from "./components/DogImage";
 import { SearchInput } from "./components/SearchInput";
 import { Text } from "./components/Text";
 import { API_URLS, initialQueryState } from "./consts";
 import { BreedSearchParam } from "./types";
 import { request } from "./utils";
+import { ReactComponent as HeartIcon } from './assets/heart.svg';
+
+/* local storage stuff */
+const FAVOURITE_DOGS_KEY = 'favouriteDogs';
+const getFavouriteDogs = (): string[] => {
+    const favouriteDogs = localStorage.getItem(FAVOURITE_DOGS_KEY);
+    if (!favouriteDogs) return [];
+    else return JSON.parse(favouriteDogs);
+}
+const saveFavouriteDog = (url: string, operationType: 'fav' | 'unfav') => {
+    console.log(url, operationType);
+    const favouriteDogsString = localStorage.getItem(FAVOURITE_DOGS_KEY);
+    if (!favouriteDogsString) {
+        localStorage.setItem(
+            FAVOURITE_DOGS_KEY,
+            JSON.stringify([url])
+        );   
+    } else {
+        const favouriteDogs: string[] = JSON.parse(favouriteDogsString);
+        localStorage.setItem(
+            FAVOURITE_DOGS_KEY,
+            operationType === 'fav'
+                ? JSON.stringify([...favouriteDogs, url])
+                : JSON.stringify(favouriteDogs.filter((imgUrl) => imgUrl !== url))
+        );
+    }
+}
 
 const App = () => {
-    // because when searching for subbreed, should be ".../<breed>/<subbreed>/..." in the fetch
+    // when searching for subbreed, should be ".../<breed>/<subbreed>/..." in the fetch
     const [breedSearchParam, setBreedSearchParam] = useState<BreedSearchParam>({breed: null, subBreed: null});
     const [dogBreedsQueryData, setDogBreedsQueryData] = useState(initialQueryState);
     const [dogsQueryData, setDogsQueryData] = useState(initialQueryState);
+    const [favouriteDogs, setFavouriteDogs] = useState(getFavouriteDogs());
 
     useEffect(() => {
         setDogBreedsQueryData({...dogBreedsQueryData, loading: true});
@@ -41,7 +69,7 @@ const App = () => {
                     error: !res.status ? 'Error!' : null,
                     loading: false,
                 })
-            })
+            });
     };
 
     return (
@@ -63,15 +91,43 @@ const App = () => {
                 }}
             />
             <div className="dogs-container">
-                {dogsQueryData.loading && <Text>loading</Text>}
                 {dogsQueryData.error && <Text>error</Text>}
                 {Object.keys(dogsQueryData.data).length === 0 && !dogsQueryData.loading && !dogsQueryData.error && <Text>No dogs searched yet!</Text>}
-                {Object.values(dogsQueryData.data).map((imgSrc) => (
-                    <Image key={imgSrc} src={imgSrc}/>
-                ))}
+                {Object.values(dogsQueryData.data).map((imgSrc) => {
+                    const fav = favouriteDogs.includes(imgSrc);
+                    return (
+                        <DogImage
+                            key={imgSrc}
+                            src={imgSrc}
+                            loading={dogsQueryData.loading}
+                            onHeartClick={() => {
+                                saveFavouriteDog(imgSrc, fav ? 'unfav' : 'fav');
+                                setFavouriteDogs(getFavouriteDogs());
+                            }}
+                            fav={fav}
+                        />
+                    );
+                })}
             </div>
-            <div className="favourite-dogs-container">
-                some favourite dogs results here :D
+            <div className="favourite-dogs">
+                <div className="title">
+                    <HeartIcon/>
+                    <Text>Favourites</Text>
+                </div>
+                <div className="dogs-container">
+                    {favouriteDogs.length === 0 && <Text>{`No favourite dogs yet :(`}</Text>}
+                    {favouriteDogs.map((imgSrc) => (
+                        <DogImage
+                            key={imgSrc}
+                            src={imgSrc}
+                            onHeartClick={() => {
+                                saveFavouriteDog(imgSrc, 'unfav');
+                                setFavouriteDogs(getFavouriteDogs());
+                            }}
+                            fav
+                        />
+                    ))}
+                </div>
             </div>
         </div>
     );
